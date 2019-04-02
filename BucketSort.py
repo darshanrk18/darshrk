@@ -1,4 +1,6 @@
 import math
+import string
+import random
 DEFAULT_BUCKET_SIZE = 5
 def insertionSort(arr):
 
@@ -8,6 +10,10 @@ def insertionSort(arr):
             (arr[i-1],arr[i],i)=(arr[i],arr[i-1],i-1)
 
 def sort(array, bucketSize=DEFAULT_BUCKET_SIZE):
+    f=0
+    if type(array)==str:
+        f=1
+        array=[ord(x) for x in array]
     if len(array) == 0:
         return array
 
@@ -21,14 +27,14 @@ def sort(array, bucketSize=DEFAULT_BUCKET_SIZE):
               maxValue = array[i]
 
     # Initialize buckets
-    bucketCount = math.floor((ord(maxValue) -ord( minValue)) / bucketSize) + 1
+    bucketCount = math.floor((maxValue - minValue) / bucketSize) + 1
     buckets = []
     for i in range(0, bucketCount):
         buckets.append([])
 
     #Distribute input array values into buckets
     for i in range(0, len(array)):
-        buckets[math.floor((ord(array[i]) -ord( minValue)) / bucketSize)].append(array[i])
+        buckets[math.floor((array[i] - minValue) / bucketSize)].append(array[i])
 
     #Sort buckets and place back into input array
     array = []
@@ -37,9 +43,21 @@ def sort(array, bucketSize=DEFAULT_BUCKET_SIZE):
         for j in range(0, len(buckets[i])):
             array.append(buckets[i][j])
 
-    for i in range(0, len(array)):
-        print(array[i])
+    if f:
+        for i in range(len(array)):
+            print(chr(array[i]),end=' ')
+    else:
+        for i in range(0, len(array)):
+            print(array[i],end=' ')
 
-print("Enter the list of elements to be sorted: ",end=' ')
-l=[(x) for x in input().split()]
+c=int(input("1.Str input\n2.Int input\n3.Float input\nEnter your choice: "))
+if c==1:
+    l=[random.choice(string.ascii_uppercase) for x in range(10)]
+elif c==2:
+    l=[random.randint(1,100) for x in range(10)]
+else:
+    l=[float('%.2f'%random.uniform(1,3)) for x in range(10)]
+print("Initial list:",l)
+print("SORTED LIST".center(51,'*'))
 sort(l)
+print()
